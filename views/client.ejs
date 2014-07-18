@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+        <title>Client Authentication</title>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+        <style>
+                body            { padding-top:80px; }
+        </style>
+</head>
+<body>
+<div class="container">
+<div class="col-sm-6 col-sm-offset-3">
+
+        <h1><span class="fa fa-sign-in"></span> Client</h1>
+
+        <form action="/client" method="post">
+                <div class="form-group">
+                        <label>Authorization endpoint</label>
+                        <input type="text" class="form-control" name="authorize_endpoint">
+                </div>
+                <div class="form-group">
+                        <label>Token endpoint</label>
+                        <input type="text" class="form-control" name="token_endpoint">
+                </div>
+                 <div class="form-group">
+                        <label>Client ID</label>
+                        <input type="text" class="form-control" name="client_id">
+                </div>
+                <div class="form-group">
+                        <label>Client secret</label>
+                        <input type="text" class="form-control" name="client_secret">
+                </div>
+
+
+                <button type="submit" class="btn btn-warning btn-lg">Submit</button>
+        </form>
+
+</div>
+</div>
+</body>
+</html>

@@ -1,5 +1,7 @@
-module.exports = function(app, passport) {
+// load the auth variables
+var client = require('/home/3scale/node-authentication-guide/config/auth'); // use this one for testing
 
+module.exports = function(app, passport) {
 // normal routes ===============================================================
 
 	// show the home page (will also have our login links)
@@ -14,12 +16,29 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	// LOGOUT ==============================
+	
+        // DAILOG SECTION =========================
+        app.get('/dailog', isLoggedIn, function(req, res) {
+                res.render('dailog.ejs', {
+                        user : req.user,
+			state : global.state
+                });
+        });
+
+        // LOGOUT ==============================
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
 	});
-
+ 
+        app.get('/client', function(req, res) {
+                res.render("client.ejs");
+        });
+	
+	app.post('/client', function(req, res) {
+		var authorize_endpoint = req.body.authorize_endpoint;
+    		var token_endpoint = req.body.token_endpoint;		
+	});
 // =============================================================================
 // AUTHENTICATE (FIRST LOGIN) ==================================================
 // =============================================================================
@@ -28,12 +47,13 @@ module.exports = function(app, passport) {
 		// LOGIN ===============================
 		// show the login form
 		app.get('/login', function(req, res) {
-			res.render('login.ejs', { message: req.flash('loginMessage') });
+			global.state = req.query.state;
+			res.render('login.ejs', { message: req.flash('loginMessage'), state: req.query.state });
 		});
 
 		// process the login form
 		app.post('/login', passport.authenticate('local-login', {
-			successRedirect : '/profile', // redirect to the secure profile section
+			successRedirect : '/dailog', // redirect to the secure profile section
 			failureRedirect : '/login', // redirect back to the signup page if there is an error
 			failureFlash : true // allow flash messages
 		}));
@@ -46,7 +66,7 @@ module.exports = function(app, passport) {
 
 		// process the signup form
 		app.post('/signup', passport.authenticate('local-signup', {
-			successRedirect : '/profile', // redirect to the secure profile section
+			successRedirect : '/dailog', // redirect to the secure profile section
 			failureRedirect : '/signup', // redirect back to the signup page if there is an error
 			failureFlash : true // allow flash messages
 		}));
